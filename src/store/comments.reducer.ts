@@ -1,5 +1,6 @@
 /**
- * TODO: async thunk param type 추가할 것
+ * @TODO 수정버튼 클릭했을 때 setForm활용해서 데이터 채워주기
+ * @TODO ??
  */
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
