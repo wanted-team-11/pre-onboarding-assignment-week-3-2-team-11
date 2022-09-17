@@ -60,7 +60,7 @@ const Button = styled.div`
 //   setFormData(comment);
 // }
 
-interface IData {
+export interface IData {
   comments: {
     comments: Comment[];
   };
@@ -69,12 +69,15 @@ interface IData {
 function CommentList() {
   const dispatch = useDispatch();
 
-  const commentData = useSelector<IData, Comment[]>(
-    (state) => state.comments.comments
-  );
+  const commentData = useSelector<IData, Comment[]>((state) => {
+    console.log(state.comments.comments);
+    return state.comments.comments;
+  });
 
   useEffect(() => {
-    dispatch(getComments());
+    return () => {
+      dispatch(getComments());
+    };
   }, []);
 
   return (

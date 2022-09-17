@@ -33,7 +33,7 @@ export const getComments = createAsyncThunk("comment/getComments", async () => {
   //   `/comments?_page=${pageNum}&_limit=4&_order=desc&_sort=id`
   // );
   const response = await axiosClient.get(`/comments`);
-  // console.log("get comments: ", response);
+  console.log("get comments: ", response);
 
   return response.data;
 });
