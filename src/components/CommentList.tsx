@@ -1,5 +1,14 @@
+/**
+ * TODO| *
+ * TODO|
+ * TODO|
+ */
+
 import React from "react";
 import styled from "styled-components";
+// import { setFormData } from "../store/form.reducer";
+
+// import { setFormData } from "form 리듀서"
 
 const Comment = styled.div`
   padding: 7px 10px;
@@ -46,25 +55,34 @@ const data = [
   },
 ];
 
+// const passDataToForm = (comment) => {
+//   setFormData(comment);
+// }
+
 function CommentList() {
-  return data.map((comment, key) => (
-    <Comment key={key}>
-      <img src={comment.profile_url} alt="" />
+  return (
+    <>
+      {data.map((comment, key) => (
+        <Comment key={key}>
+          <img src={comment.profile_url} alt="" />
 
-      {comment.author}
+          {comment.author}
 
-      <CreatedAt>{comment.createdAt}</CreatedAt>
+          <CreatedAt>{comment.createdAt}</CreatedAt>
 
-      <Content>{comment.content}</Content>
+          <Content>{comment.content}</Content>
 
-      <Button>
-        <a>수정</a>
-        <a>삭제</a>
-      </Button>
+          {/* <Button onClick={() => passDataToForm(comment)}> */}
+          <Button>
+            <a>수정</a>
+            <a>삭제</a>
+          </Button>
 
-      <hr />
-    </Comment>
-  ));
+          <hr />
+        </Comment>
+      ))}
+    </>
+  );
 }
 
 export default CommentList;

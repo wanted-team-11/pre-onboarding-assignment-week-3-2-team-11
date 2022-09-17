@@ -1,5 +1,13 @@
+/**
+ * TODO| * form reducer으로부터 input에 data binding하기
+ * TODO| * submit시 submit mode에 알맞는 api 호출하기 => 해당 api call은 comment reducer에 있다
+ * TODO| * 등록/수정 완료 시 input 모두 reset하기 => form reducer에 있음
+ */
+
 import React from "react";
 import styled from "styled-components";
+
+// import { submitMode } from "form 슬라이스?"
 
 const FormStyle = styled.div`
   & > form {
@@ -25,8 +33,19 @@ const FormStyle = styled.div`
 `;
 
 function Form() {
+  // const handleSubmit = () => {
+  //   if(submitMode === "post") {
+  //     // 서버에 post한다
+  //   }
+
+  //   if(submitMode === "put") {
+  //     // 서버에 put한다
+  //   }
+  // }
+
   return (
     <FormStyle>
+      {/* <form onSubmit={handleSubmit}> */}
       <form>
         <input
           type="text"
