@@ -5,9 +5,10 @@
  */
 
 import React from "react";
+import { setForm } from "../store/form.reducer";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../store";
 import styled from "styled-components";
-
-// import { submitMode } from "form 슬라이스?"
 
 const FormStyle = styled.div`
   & > form {
@@ -33,32 +34,60 @@ const FormStyle = styled.div`
 `;
 
 function Form() {
-  // const handleSubmit = () => {
-  //   if(submitMode === "post") {
-  //     // 서버에 post한다
-  //   }
+  const { inputs } = useSelector((state: RootState) => state.form);
+  const { profile_url, author, content, createdAt } = inputs;
+  const dispatch = useDispatch();
+  console.log(inputs);
 
-  //   if(submitMode === "put") {
-  //     // 서버에 put한다
-  //   }
-  // }
+  const handleInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { value, name } = e.currentTarget;
+    dispatch(
+      setForm({
+        ...inputs,
+        [name]: value,
+      })
+    );
+  };
 
   return (
     <FormStyle>
       {/* <form onSubmit={handleSubmit}> */}
       <form>
         <input
+          onChange={handleInput}
           type="text"
           name="profile_url"
           placeholder="https://picsum.photos/id/1/50/50"
           required
+          value={profile_url}
         />
         <br />
-        <input type="text" name="author" placeholder="작성자" />
+        <input
+          onChange={handleInput}
+          type="text"
+          name="author"
+          placeholder="작성자"
+          value={author}
+        />
         <br />
-        <textarea name="content" placeholder="내용" required></textarea>
+        <textarea
+          onChange={handleInput}
+          name="content"
+          placeholder="내용"
+          required
+          value={content}
+        ></textarea>
         <br />
-        <input type="text" name="createdAt" placeholder="2020-05-30" required />
+        <input
+          onChange={handleInput}
+          type="text"
+          name="createdAt"
+          placeholder="2020-05-30"
+          value={createdAt}
+          required
+        />
         <br />
         <button type="submit">등록</button>
       </form>

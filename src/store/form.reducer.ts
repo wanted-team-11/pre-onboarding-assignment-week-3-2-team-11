@@ -1,33 +1,36 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
-  id: 1,
-  profile_url: "https://picsum.photos/id/1/50/50",
-  author: "abc_1",
-  content: "UI 테스트는 어떻게 진행하나요",
-  createdAt: "2022-03-01",
+interface FormInputs {
+  id: string;
+  profile_url: string;
+  author: string;
+  content: string;
+  createdAt: string;
+}
+
+interface FormInputsState {
+  inputs: FormInputs;
+}
+
+const initialState: FormInputsState = {
+  inputs: {
+    id: "",
+    profile_url: "",
+    author: "",
+    content: "",
+    createdAt: "",
+  },
 };
-
-// GET
-// const getComments = createAsyncThunk('comment/getComments', async (params: any)=>{
-//   const response = await fetch('url', params);
-//   return response
-// })
-
-// const postComments = createAsyncThunk('comment/postComments', async (params: any) => {
-//   const response = await fetch('url', params);
-//   return response;
-// })
 
 export const formSlice = createSlice({
   name: "form",
   initialState,
   reducers: {
     resetForm: (state) => {
-      state = initialState;
+      state.inputs = initialState.inputs;
     },
-    setForm: (state, action) => {
-      state = { ...action.payload };
+    setForm: (state, action: PayloadAction<FormInputs>) => {
+      state.inputs = { ...action.payload };
     },
   },
 });
