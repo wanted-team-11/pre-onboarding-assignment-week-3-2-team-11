@@ -4,11 +4,11 @@
  * TODO| * 등록/수정 완료 시 input 모두 reset하기 => form reducer에 있음
  */
 
-import React, { useState } from "react";
+import React from "react";
+import { setForm } from "../store/form.reducer";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../store";
 import styled from "styled-components";
-
-// import { submitMode } from "form 슬라이스?"
-import axios from "axios";
 
 const FormStyle = styled.div`
   & > form {
@@ -34,80 +34,59 @@ const FormStyle = styled.div`
 `;
 
 function Form() {
-  const [newComments, setNewComments] = useState({
-    profile_url: "",
-    author: "",
-    content: "",
-    createdAt: "",
-  });
+  const { inputs } = useSelector((state: RootState) => state.form);
+  const { profile_url, author, content, createdAt } = inputs;
+  const dispatch = useDispatch();
+  console.log(inputs);
 
-  const saveValue = (
+  const handleInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setNewComments({ ...newComments, [name]: value });
+    const { value, name } = e.currentTarget;
+    dispatch(
+      setForm({
+        ...inputs,
+        [name]: value,
+      })
+    );
   };
-
-  const sendValue = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    axios
-      .post("http://localhost:4000/comments", { ...newComments })
-      .then((res) => console.log(res));
-  };
-  // const handleSubmit = () => {
-  //   if(submitMode === "post") {
-  //     // 서버에 post한다
-  //   }
-
-  //   if(submitMode === "put") {
-  //     // 서버에 put한다
-  //   }
-  // }
 
   return (
     <FormStyle>
       {/* <form onSubmit={handleSubmit}> */}
-      <form
-        onSubmit={(e) => {
-          sendValue(e);
-        }}
-      >
+      <form>
         <input
+          onChange={handleInput}
           type="text"
           name="profile_url"
           placeholder="https://picsum.photos/id/1/50/50"
           required
-          onChange={(e) => {
-            saveValue(e);
-          }}
+          value={profile_url}
         />
         <br />
         <input
+          onChange={handleInput}
           type="text"
           name="author"
           placeholder="작성자"
-          onChange={(e) => {
-            saveValue(e);
-          }}
+          value={author}
         />
         <br />
         <textarea
+          onChange={handleInput}
           name="content"
           placeholder="내용"
           required
-          onChange={(e) => {
-            saveValue(e);
-          }}
+          value={content}
         ></textarea>
         <br />
         <input
+          onChange={handleInput}
           type="text"
           name="createdAt"
           placeholder="2020-05-30"
+          value={createdAt}
           required
-          onChange={(e) => {
-            saveValue(e);
-          }}
         />
         <br />
         <button type="submit">등록</button>

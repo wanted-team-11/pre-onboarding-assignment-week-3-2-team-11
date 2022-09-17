@@ -1,9 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import commentsReducer from "./comments.reducer";
+import formReducer from "./form.reducer";
 
-const reducer = {
-  comments: commentsReducer,
-};
+const reducer = combineReducers({
+  form: formReducer,
+  commets: commentsReducer,
+});
 
 export const store = configureStore({
   reducer,
