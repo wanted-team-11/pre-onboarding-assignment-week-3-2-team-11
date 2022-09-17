@@ -1,8 +1,8 @@
 import React from "react";
-import PageList from "../components/PageList";
+import Pagination from "../components/Pagination";
 
 function PageListContainer() {
-  return <PageList />;
+  return <Pagination />;
 }
 
 export default PageListContainer;
