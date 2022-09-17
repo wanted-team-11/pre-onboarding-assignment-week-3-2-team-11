@@ -35,14 +35,11 @@ const FormStyle = styled.div`
 
 function Form() {
   const [newComments, setNewComments] = useState({
-    id: 100,
     profile_url: "",
     author: "",
     content: "",
     createdAt: "",
   });
-
-  console.log(newComments);
 
   const saveValue = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

@@ -20,23 +20,27 @@ export interface Comment {
 export interface CommentState {
   comments: Comment[];
   isLoading: boolean;
+  totalCount: number;
 }
 
 const initialState: CommentState = {
   comments: [],
   isLoading: false,
+  totalCount: 0,
 };
 
 // GET
-export const getComments = createAsyncThunk("comment/getComments", async () => {
-  // const response = await axiosClient.get<Comment[]>(
-  //   `/comments?_page=${pageNum}&_limit=4&_order=desc&_sort=id`
-  // );
-  const response = await axiosClient.get(`/comments`);
-  console.log("get comments: ", response);
+export const getComments = createAsyncThunk(
+  "comment/getComments",
+  async (pageNum: number = 1) => {
+    const response = await axiosClient.get<Comment[]>(
+      `/comments?_page=${pageNum}&_limit=4&_order=desc&_sort=id`
+    );
+    const totalCount = parseInt(response.headers["x-total-count"]);
 
-  return response.data;
-});
+    return [response.data, totalCount];
+  }
+);
 
 // PUT
 export const putComments = createAsyncThunk(
@@ -59,9 +63,9 @@ export const postComments = createAsyncThunk(
 // DELETE
 export const deleteComments = createAsyncThunk(
   "comment/deleteComments",
-  async (comment: Comment) => {
-    const response = await axiosClient.delete(`/comments/${comment.id}`);
-    return response;
+  async (id: number) => {
+    const response = await axiosClient.delete(`/comments/${id}`);
+    return response.data;
   }
 );
 
@@ -82,17 +86,17 @@ export const commentsSlice = createSlice({
   extraReducers: (builder) => {
     // GET
     builder.addCase(getComments.pending, (state, action) => {
-      console.log(action);
       state.isLoading = true;
     });
     builder.addCase(getComments.fulfilled, (state, action) => {
-      state.comments = [...action.payload];
+      const [comments, totalCount] = action.payload;
+      state.comments = comments as Comment[];
+      state.totalCount = totalCount as number;
       state.isLoading = false;
+      console.log("comments", comments);
     });
     builder.addCase(getComments.rejected, (state, action) => {
       alert("데이터를 받는데 문제가 발생했습니다...");
-      // console.log("state", state.comments);
-      console.log(action);
       state.isLoading = false;
     });
 
