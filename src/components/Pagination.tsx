@@ -42,15 +42,12 @@ function Pagination() {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
-    if (currentPage <= PAGE_RANGE_CONST) setFivePage([1, 2, 3, 4, 5]);
-    else if (currentPage > PAGE_RANGE_CONST) {
-      const range = Math.floor(currentPage / PAGE_RANGE_CONST);
-      const newFivePage = pageArray.slice(
-        range * PAGE_RANGE_CONST,
-        (range + 1) * PAGE_RANGE_CONST
-      );
-      setFivePage(newFivePage);
-    }
+    const range = Math.ceil(currentPage / PAGE_RANGE_CONST);
+    const newFivePage = pageArray.slice(
+      (range - 1) * PAGE_RANGE_CONST,
+      range * PAGE_RANGE_CONST
+    );
+    setFivePage(newFivePage);
   }, [currentPage, pageArray]);
 
   const onClickButton = (e: MouseEvent<HTMLButtonElement>) => {
