@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import commentsReducer from "./comments.reducer";
 
 const reducer = {
-  commets: commentsReducer,
+  comments: commentsReducer,
 };
 
 export const store = configureStore({

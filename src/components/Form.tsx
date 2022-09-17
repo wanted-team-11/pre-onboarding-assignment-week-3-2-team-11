@@ -4,10 +4,11 @@
  * TODO| * 등록/수정 완료 시 input 모두 reset하기 => form reducer에 있음
  */
 
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 // import { submitMode } from "form 슬라이스?"
+import axios from "axios";
 
 const FormStyle = styled.div`
   & > form {
@@ -33,6 +34,26 @@ const FormStyle = styled.div`
 `;
 
 function Form() {
+  const [newComments, setNewComments] = useState({
+    profile_url: "",
+    author: "",
+    content: "",
+    createdAt: "",
+  });
+
+  const saveValue = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setNewComments({ ...newComments, [name]: value });
+  };
+
+  const sendValue = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:4000/comments", { ...newComments })
+      .then((res) => console.log(res));
+  };
   // const handleSubmit = () => {
   //   if(submitMode === "post") {
   //     // 서버에 post한다
@@ -46,19 +67,48 @@ function Form() {
   return (
     <FormStyle>
       {/* <form onSubmit={handleSubmit}> */}
-      <form>
+      <form
+        onSubmit={(e) => {
+          sendValue(e);
+        }}
+      >
         <input
           type="text"
           name="profile_url"
           placeholder="https://picsum.photos/id/1/50/50"
           required
+          onChange={(e) => {
+            saveValue(e);
+          }}
         />
         <br />
-        <input type="text" name="author" placeholder="작성자" />
+        <input
+          type="text"
+          name="author"
+          placeholder="작성자"
+          onChange={(e) => {
+            saveValue(e);
+          }}
+        />
         <br />
-        <textarea name="content" placeholder="내용" required></textarea>
+        <textarea
+          name="content"
+          placeholder="내용"
+          required
+          onChange={(e) => {
+            saveValue(e);
+          }}
+        ></textarea>
         <br />
-        <input type="text" name="createdAt" placeholder="2020-05-30" required />
+        <input
+          type="text"
+          name="createdAt"
+          placeholder="2020-05-30"
+          required
+          onChange={(e) => {
+            saveValue(e);
+          }}
+        />
         <br />
         <button type="submit">등록</button>
       </form>
