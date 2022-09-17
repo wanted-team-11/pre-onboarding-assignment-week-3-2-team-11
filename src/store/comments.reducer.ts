@@ -6,7 +6,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "localhost:4000",
+  baseURL: "http://localhost:4000",
 });
 
 export interface Comment {
@@ -28,16 +28,15 @@ const initialState: CommentState = {
 };
 
 // GET
-export const getComments = createAsyncThunk(
-  "comment/getComments",
-  async (pageNum: number = 1) => {
-    const response = await axiosClient.get<Comment[]>(
-      `/comments?_page=${pageNum}&_limit=4&_order=desc&_sort=id`
-    );
-    console.log("get comments: ", response);
-    return response.data;
-  }
-);
+export const getComments = createAsyncThunk("comment/getComments", async () => {
+  // const response = await axiosClient.get<Comment[]>(
+  //   `/comments?_page=${pageNum}&_limit=4&_order=desc&_sort=id`
+  // );
+  const response = await axiosClient.get(`/comments`);
+  // console.log("get comments: ", response);
+
+  return response.data;
+});
 
 // PUT
 export const putComments = createAsyncThunk(
@@ -82,7 +81,8 @@ export const commentsSlice = createSlice({
   },
   extraReducers: (builder) => {
     // GET
-    builder.addCase(getComments.pending, (state) => {
+    builder.addCase(getComments.pending, (state, action) => {
+      console.log(action);
       state.isLoading = true;
     });
     builder.addCase(getComments.fulfilled, (state, action) => {
@@ -91,6 +91,8 @@ export const commentsSlice = createSlice({
     });
     builder.addCase(getComments.rejected, (state, action) => {
       alert("데이터를 받는데 문제가 발생했습니다...");
+      // console.log("state", state.comments);
+      console.log(action);
       state.isLoading = false;
     });
 

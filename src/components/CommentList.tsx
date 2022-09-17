@@ -4,13 +4,14 @@
  * TODO|
  */
 
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 // import { setFormData } from "../store/form.reducer";
-
 // import { setFormData } from "form 리듀서"
+import { getComments, Comment } from "../store/comments.reducer";
 
-const Comment = styled.div`
+const CommentStyle = styled.div`
   padding: 7px 10px;
   text-align: left;
 
@@ -45,25 +46,41 @@ const Button = styled.div`
 `;
 
 // 임시 데이터 입니다. 코드 작성시 data 부분을 지워주세요
-const data = [
-  {
-    id: 1,
-    profile_url: "https://picsum.photos/id/1/50/50",
-    author: "abc_1",
-    content: "UI 테스트는 어떻게 진행하나요",
-    createdAt: "2020-05-01",
-  },
-];
+// const data = [
+//   {
+//     id: 1,
+//     profile_url: "https://picsum.photos/id/1/50/50",
+//     author: "abc_1",
+//     content: "UI 테스트는 어떻게 진행하나요",
+//     createdAt: "2020-05-01",
+//   },
+// ];
 
 // const passDataToForm = (comment) => {
 //   setFormData(comment);
 // }
 
+interface IData {
+  comments: {
+    comments: Comment[];
+  };
+}
+
 function CommentList() {
+  const dispatch = useDispatch();
+
+  const commentData = useSelector<IData, Comment[]>(
+    (state) => state.comments.comments
+  );
+
+  useEffect(() => {
+    dispatch(getComments());
+  }, []);
+
   return (
     <>
-      {data.map((comment, key) => (
-        <Comment key={key}>
+      {commentData.map((comment, key) => (
+        <CommentStyle key={key}>
           <img src={comment.profile_url} alt="" />
 
           {comment.author}
@@ -79,7 +96,7 @@ function CommentList() {
           </Button>
 
           <hr />
-        </Comment>
+        </CommentStyle>
       ))}
     </>
   );
