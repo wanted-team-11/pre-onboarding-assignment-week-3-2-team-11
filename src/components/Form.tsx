@@ -1,43 +1,19 @@
-/**
- * TODO| * form reducer으로부터 input에 data binding하기
- * TODO| * submit시 submit mode에 알맞는 api 호출하기 => 해당 api call은 comment reducer에 있다
- * TODO| * 등록/수정 완료 시 input 모두 reset하기 => form reducer에 있음
- */
-
 import React from "react";
-import { setForm } from "../store/form.reducer";
+import { resetForm, setForm, setMode } from "../store/form.reducer";
+import {
+  postComments,
+  putComments,
+  Comment,
+  getComments,
+} from "../store/comments.reducer";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../store";
 import styled from "styled-components";
 
-const FormStyle = styled.div`
-  & > form {
-    padding: 0 10px;
-    margin-bottom: 50px;
-  }
-  & > form > textarea {
-    padding: 5px 1%;
-    width: 98%;
-    height: 50px;
-  }
-  & > form > input[type="text"] {
-    padding: 5px 1%;
-    width: 98%;
-    margin-bottom: 10px;
-  }
-  & > form > button {
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    border: 1px solid lightgray;
-    cursor: pointer;
-  }
-`;
-
 function Form() {
-  const { inputs } = useSelector((state: RootState) => state.form);
+  const { inputs, submitMode } = useSelector((state: RootState) => state.form);
   const { profile_url, author, content, createdAt } = inputs;
   const dispatch = useDispatch();
-  console.log(inputs);
 
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -51,10 +27,33 @@ function Form() {
     );
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (submitMode === "post") {
+      const newComment = {
+        profile_url,
+        author,
+        content,
+        createdAt,
+      };
+      dispatch(postComments(newComment));
+      dispatch(getComments(1));
+    } else if (submitMode === "put") {
+      const editedComment: Comment = {
+        ...inputs,
+        id: parseInt(inputs.id),
+      };
+      dispatch(putComments(editedComment));
+    }
+
+    dispatch(resetForm());
+    dispatch(setMode("post"));
+  };
+
   return (
     <FormStyle>
-      {/* <form onSubmit={handleSubmit}> */}
-      <form>
+      <form onSubmit={handleSubmit}>
         <input
           onChange={handleInput}
           type="text"
@@ -96,3 +95,26 @@ function Form() {
 }
 
 export default Form;
+
+const FormStyle = styled.div`
+  & > form {
+    padding: 0 10px;
+    margin-bottom: 50px;
+  }
+  & > form > textarea {
+    padding: 5px 1%;
+    width: 98%;
+    height: 50px;
+  }
+  & > form > input[type="text"] {
+    padding: 5px 1%;
+    width: 98%;
+    margin-bottom: 10px;
+  }
+  & > form > button {
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    border: 1px solid lightgray;
+    cursor: pointer;
+  }
+`;

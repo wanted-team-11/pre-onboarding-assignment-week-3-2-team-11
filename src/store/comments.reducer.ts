@@ -54,7 +54,7 @@ export const putComments = createAsyncThunk(
 // POST
 export const postComments = createAsyncThunk(
   "comment/postComments",
-  async (comment: Comment) => {
+  async (comment: Omit<Comment, "id">) => {
     const response = await axiosClient.post("/comments", comment);
     return response.data;
   }
