@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { MouseEvent, useState } from "react";
 import styled from "styled-components";
-import { useAppSelector } from "../store";
-
-const COMMENT_PER_PAGE = 4;
+import { useAppDispatch, useAppSelector } from "../store";
+import { getComments } from "../store/comments.reducer";
 
 const PageListStyle = styled.div`
   margin-bottom: 20px;
@@ -29,28 +28,49 @@ const NumberPage = styled(Page)`
   `}
 `;
 
+const COMMENT_PER_PAGE = 4;
 function Pagination() {
   const totalCommentsCount = useAppSelector(
     (state) => state.commets.totalCount
   );
   const totalPage = Math.ceil(totalCommentsCount / COMMENT_PER_PAGE);
+  const pageArray = [];
+  for (let i = 1; i <= totalPage; i++) {
+    pageArray.push(i);
+  }
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const onClickButton = (e: any) => {
-    const pageNum = 1;
+  const dispatch = useAppDispatch();
+
+  const onClickButton = (e: MouseEvent<HTMLButtonElement>) => {
+    const pageNum = parseInt(e.currentTarget.value);
     setCurrentPage(pageNum);
+    dispatch(getComments(pageNum));
   };
+
   const onClickPrevPage = () => {
     setCurrentPage(1);
+    dispatch(getComments(1));
   };
+
   const onClickLastPage = () => {
     setCurrentPage(totalPage);
+    dispatch(getComments(totalPage));
   };
+
   return (
     <PageListStyle>
       <PrevPage onClick={onClickPrevPage}>prev</PrevPage>
-      <NumberPage active={true} key="1">
-        1
-      </NumberPage>
+      {pageArray.map((page) => (
+        <NumberPage
+          active={page === currentPage ? true : false}
+          key={`pagination-key-${page}`}
+          onClick={onClickButton}
+          value={page}
+        >
+          {page}
+        </NumberPage>
+      ))}
+
       <LastPage onClick={onClickLastPage}>last</LastPage>
     </PageListStyle>
   );
