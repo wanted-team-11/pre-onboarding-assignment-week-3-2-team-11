@@ -153,23 +153,6 @@
       "author": "abc_22",
       "content": "주변에 React 개발자 있나요",
       "createdAt": "2022-03-22"
-    },
-    {
-      "newComments": {
-        "id": 22,
-        "profile_url": "http://dasfsaefsdaf.com",
-        "author": "tester",
-        "content": "testing",
-        "createdAt": "2022-09-17"
-      },
-      "id": 23
-    },
-    {
-      "profile_url": "http://123123123",
-      "author": "123123",
-      "content": "123123123",
-      "createdAt": "2022-09-17",
-      "id": 24
     }
   ]
 }

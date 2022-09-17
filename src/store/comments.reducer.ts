@@ -93,7 +93,6 @@ export const commentsSlice = createSlice({
       state.comments = comments as Comment[];
       state.totalCount = totalCount as number;
       state.isLoading = false;
-      console.log("comments", comments);
     });
     builder.addCase(getComments.rejected, (state, action) => {
       alert("데이터를 받는데 문제가 발생했습니다...");
@@ -105,8 +104,6 @@ export const commentsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(putComments.fulfilled, (state, action) => {
-      // state.comments = [...action.payload];
-      console.log("수정된 데이터", [...action.payload]);
       state.isLoading = false;
     });
     builder.addCase(putComments.rejected, (state, action) => {

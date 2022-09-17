@@ -7,6 +7,7 @@ import {
   getComments,
   Comment,
   deleteComments,
+  putComments,
 } from "../store/comments.reducer";
 
 // const passDataToForm = (comment) => {
@@ -59,8 +60,6 @@ function CommentList() {
               삭제
             </button>
           </Button>
-
-          <button type="button">PUT</button>
           <hr />
         </CommentStyle>
       ))}
