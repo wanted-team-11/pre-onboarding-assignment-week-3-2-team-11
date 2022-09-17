@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+const COMMENT_PER_PAGE = 4;
+
 const PageListStyle = styled.div`
   margin-bottom: 20px;
   text-align: center;
@@ -21,7 +23,7 @@ const Page = styled.button`
   margin-right: 3px;
 `;
 
-function PageList() {
+function Pagination() {
   const pageArray = [];
 
   pageArray.push(
@@ -34,4 +36,4 @@ function PageList() {
   return <PageListStyle>{pageArray}</PageListStyle>;
 }
 
-export default PageList;
+export default Pagination;
