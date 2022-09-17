@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../store";
 import { getComments } from "../store/comments.reducer";
@@ -27,19 +27,31 @@ const NumberPage = styled(Page)`
         color: #fff;
   `}
 `;
-
+const PAGE_RANGE_CONST = 5;
 const COMMENT_PER_PAGE = 4;
 function Pagination() {
   const totalCommentsCount = useAppSelector(
     (state) => state.commets.totalCount
   );
-  const totalPage = Math.ceil(totalCommentsCount / COMMENT_PER_PAGE);
-  const pageArray = [];
-  for (let i = 1; i <= totalPage; i++) {
-    pageArray.push(i);
-  }
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const dispatch = useAppDispatch();
+
+  const totalPage = Math.ceil(totalCommentsCount / COMMENT_PER_PAGE);
+  const pageArray = Array.from({ length: totalPage }, (v, i) => i + 1);
+  const [fivePage, setFivePage] = useState([1, 2, 3, 4, 5]);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    if (currentPage <= PAGE_RANGE_CONST) setFivePage([1, 2, 3, 4, 5]);
+    else if (currentPage > PAGE_RANGE_CONST) {
+      const range = Math.floor(currentPage / PAGE_RANGE_CONST);
+      const newFivePage = pageArray.slice(
+        range * PAGE_RANGE_CONST,
+        (range + 1) * PAGE_RANGE_CONST
+      );
+      setFivePage(newFivePage);
+    }
+  }, [currentPage, pageArray]);
 
   const onClickButton = (e: MouseEvent<HTMLButtonElement>) => {
     const pageNum = parseInt(e.currentTarget.value);
@@ -47,7 +59,7 @@ function Pagination() {
     dispatch(getComments(pageNum));
   };
 
-  const onClickPrevPage = () => {
+  const onClickFistPage = () => {
     setCurrentPage(1);
     dispatch(getComments(1));
   };
@@ -57,10 +69,32 @@ function Pagination() {
     dispatch(getComments(totalPage));
   };
 
+  const onClickPrevPage = () => {
+    const prevPage = currentPage - 1;
+    setCurrentPage(prevPage);
+    dispatch(getComments(prevPage));
+  };
+  const onClickNextPage = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    dispatch(getComments(nextPage));
+  };
+
   return (
     <PageListStyle>
-      <PrevPage onClick={onClickPrevPage}>prev</PrevPage>
-      {pageArray.map((page) => (
+      <PrevPage
+        onClick={onClickFistPage}
+        disabled={currentPage === 1 ? true : false}
+      >
+        first
+      </PrevPage>
+      <PrevPage
+        onClick={onClickPrevPage}
+        disabled={currentPage === 1 ? true : false}
+      >
+        prev
+      </PrevPage>
+      {fivePage.map((page) => (
         <NumberPage
           active={page === currentPage ? true : false}
           key={`pagination-key-${page}`}
@@ -71,7 +105,18 @@ function Pagination() {
         </NumberPage>
       ))}
 
-      <LastPage onClick={onClickLastPage}>last</LastPage>
+      <LastPage
+        onClick={onClickNextPage}
+        disabled={currentPage === totalPage ? true : false}
+      >
+        next
+      </LastPage>
+      <LastPage
+        onClick={onClickLastPage}
+        disabled={currentPage === totalPage ? true : false}
+      >
+        last
+      </LastPage>
     </PageListStyle>
   );
 }
