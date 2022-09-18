@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface FormInputs {
+export interface FormInputs {
   id: string;
   profile_url: string;
   author: string;
@@ -8,8 +8,11 @@ interface FormInputs {
   createdAt: string;
 }
 
-interface FormInputsState {
+export type SubmitMode = "put" | "post";
+
+export interface FormInputsState {
   inputs: FormInputs;
+  submitMode: SubmitMode;
 }
 
 const initialState: FormInputsState = {
@@ -20,6 +23,7 @@ const initialState: FormInputsState = {
     content: "",
     createdAt: "",
   },
+  submitMode: "post",
 };
 
 export const formSlice = createSlice({
@@ -32,9 +36,12 @@ export const formSlice = createSlice({
     setForm: (state, action: PayloadAction<FormInputs>) => {
       state.inputs = { ...action.payload };
     },
+    setMode: (state, action: PayloadAction<SubmitMode>) => {
+      state.submitMode = action.payload;
+    },
   },
 });
 
-export const { resetForm, setForm } = formSlice.actions;
+export const { resetForm, setForm, setMode } = formSlice.actions;
 
 export default formSlice.reducer;
