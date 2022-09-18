@@ -6,14 +6,14 @@ import {
   getComments,
 } from "../store/comments.reducer";
 import { Comment } from "../types";
-import { useSelector, useDispatch } from "react-redux";
-import type { RootState } from "../store";
+import { useAppSelector, useAppDispatch } from "../store";
 import styled from "styled-components";
 
 function Form() {
-  const { inputs, submitMode } = useSelector((state: RootState) => state.form);
+  const { inputs, submitMode } = useAppSelector((state) => state.form);
+  const currentPage = useAppSelector((state) => state.comments.currentPage);
   const { profile_url, author, content, createdAt } = inputs;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -37,14 +37,15 @@ function Form() {
         content,
         createdAt,
       };
-      dispatch(postComments(newComment));
+      await dispatch(postComments(newComment));
       dispatch(getComments(1));
     } else if (submitMode === "put") {
       const editedComment: Comment = {
         ...inputs,
         id: inputs.id,
       };
-      dispatch(putComments(editedComment));
+      await dispatch(putComments(editedComment));
+      dispatch(getComments(currentPage));
     }
 
     dispatch(resetForm());

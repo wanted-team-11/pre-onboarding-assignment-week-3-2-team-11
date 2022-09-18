@@ -15,12 +15,14 @@ export interface CommentState {
   comments: Comment[];
   isLoading: boolean;
   totalCount: number;
+  currentPage: number;
 }
 
 const initialState: CommentState = {
   comments: [],
   isLoading: false,
   totalCount: 0,
+  currentPage: 0,
 };
 
 // GET
@@ -32,7 +34,7 @@ export const getComments = createAsyncThunk(
     );
     const totalCount = parseInt(response.headers["x-total-count"]);
 
-    return [response.data, totalCount];
+    return [response.data, totalCount, pageNum];
   }
 );
 
@@ -73,10 +75,11 @@ export const commentsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getComments.fulfilled, (state, action) => {
-      const [comments, totalCount] = action.payload;
+      const [comments, totalCount, currentPage] = action.payload;
       state.comments = comments;
       state.totalCount = totalCount;
       state.isLoading = false;
+      state.currentPage = currentPage;
     });
     builder.addCase(getComments.rejected, (state, action) => {
       alert("데이터를 받는데 문제가 발생했습니다...");
