@@ -17,8 +17,6 @@ function Pagination() {
   const pageArray = Array.from({ length: totalPage }, (v, i) => i + 1);
   const [fivePage, setFivePage] = useState([1, 2, 3, 4, 5]);
 
-  // const [currentPage, setCurrentPage] = useState<number>(1);
-
   useEffect(() => {
     const range = Math.ceil(currentPage / PAGE_RANGE_CONST);
     const newFivePage = pageArray.slice(

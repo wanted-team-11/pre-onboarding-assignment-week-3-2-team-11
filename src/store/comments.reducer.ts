@@ -129,6 +129,4 @@ export const commentsSlice = createSlice({
   },
 });
 
-// export const { increment, decrement, incrementByAmount } = commentsSlice.actions
-
 export default commentsSlice.reducer;

@@ -25,7 +25,7 @@ function CommentList() {
 
   useEffect(() => {
     dispatch(getComments());
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
