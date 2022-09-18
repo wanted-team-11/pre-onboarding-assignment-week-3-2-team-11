@@ -14,17 +14,17 @@ function Pagination() {
   const dispatch = useAppDispatch();
 
   const totalPage = Math.ceil(totalCommentsCount / COMMENT_PER_PAGE);
-  const pageArray = Array.from({ length: totalPage }, (v, i) => i + 1);
   const [fivePage, setFivePage] = useState([1, 2, 3, 4, 5]);
 
   useEffect(() => {
     const range = Math.ceil(currentPage / PAGE_RANGE_CONST);
+    const pageArray = Array.from({ length: totalPage }, (v, i) => i + 1);
     const newFivePage = pageArray.slice(
       (range - 1) * PAGE_RANGE_CONST,
       range * PAGE_RANGE_CONST
     );
     setFivePage(newFivePage);
-  }, [currentPage, pageArray]);
+  }, [currentPage, totalPage]);
 
   const onClickButton = (e: MouseEvent<HTMLButtonElement>) => {
     const pageNum = parseInt(e.currentTarget.value);
