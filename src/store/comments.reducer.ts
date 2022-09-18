@@ -72,17 +72,7 @@ export const deleteComments = createAsyncThunk(
 export const commentsSlice = createSlice({
   name: "comments",
   initialState,
-  reducers: {
-    // increment: (state) => {
-    //   state.value += 1
-    // },
-    // decrement: (state) => {
-    //   state.value -= 1
-    // },
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     // GET
     builder.addCase(getComments.pending, (state, action) => {

@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "../store";
 import styled from "styled-components";
 // import { setFormData } from "../store/form.reducer";
 // import { setFormData } from "form 리듀서"
@@ -7,7 +7,6 @@ import {
   getComments,
   Comment,
   deleteComments,
-  putComments,
 } from "../store/comments.reducer";
 
 // const passDataToForm = (comment) => {
@@ -21,11 +20,9 @@ export interface IData {
 }
 
 function CommentList() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const commentData = useSelector<IData, Comment[]>((state) => {
-    return state.comments.comments;
-  });
+  const commentData = useAppSelector((state) => state.comments.comments);
 
   const onDelete = (id: number) => {
     dispatch(deleteComments(id));
@@ -34,7 +31,7 @@ function CommentList() {
 
   useEffect(() => {
     dispatch(getComments());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -72,7 +69,6 @@ export default CommentList;
 const CommentStyle = styled.div`
   padding: 7px 10px;
   text-align: left;
-
   & > img {
     vertical-align: middle;
     margin-right: 10px;
