@@ -14,11 +14,11 @@
 
 > 역할
 
-| 이름                                | 역할                        |
-| ----------------------------------- | --------------------------- |
-| **정재훈** , **김인태** ,**이미란** | 게시물 작성, 수정           |
-| **오강산** , **정진우** ,**박희주** | comment list component 구현 |
-| **김항래**, **현승범**              | pagination component 구현   |
+| 이름                                | 역할                       |
+| ----------------------------------- | -------------------------- |
+| **정재훈** , **김인태** ,**이미란** | Form component 구현        |
+| **오강산** , **정진우** ,**박희주** | CommentList component 구현 |
+| **김항래**, **현승범**              | Pagination component 구현  |
 
 <br />
 <br />
@@ -28,6 +28,7 @@
     $ git clone https://github.com/wanted-team-11/pre-onboarding-assignment-week-3-2-team-11.git
     $ cd pre-onboarding-assignment-week-3-2-team-11
     $ npm install
+    $ npm run api
     $ npm start
 
 <br />
@@ -54,7 +55,7 @@
 ![typescript](https://img.shields.io/badge/typescript-4.8.3-3178C6?logo=typescript)
 ![styledComponents](https://img.shields.io/badge/styled--components-5.3.5-DB7093?logo=styledcomponents)
 ![axios](https://img.shields.io/badge/axios-0.27.2-5E22D6)
-![react-router-dom](https://img.shields.io/badge/react--router--dom-6.3.0-blue?logo=react-router)
+
 ![redux](https://img.shields.io/badge/redux--toolkit-1.8.5-764ABC?logo=Redux)
 ![React-Redux](https://img.shields.io/badge/react--redux-7.2.8-764ABC?logo=redux)
 
@@ -69,12 +70,10 @@
     - 컴포넌트화하여 재활용 가능
   - Axios
     - Request와 Reply를 JSON 형태로 자동 변경
+      - fetchAPI와 차이점으로 fetchAPI는 요청 후 Promise로 JSON형태로 변환을 해야하지만 axios는 애초에 JSON으로 응답을 해줘서 간결한 코드 작성이 가능
     - instance를 제작하여 fetchAPI보다 가독성 높은 코드를 작성 가능
-    - fetchAPI와 차이점으로 fetchAPI는 요청 후 Promise로 JSON형태로 변환을 해야하지만 axios는 애초에 JSON으로 응답을 해줘서 간결한 코드 작성이 가능
-  - React-Router-Dom
-    - React의 SPA(Single Page Application)특성상 하나의 페이지(HTML)에서 모든 렌더링이 이루어짐
-    - React의 이러한 강점을 활용하기 위해 페이지의 로딩없이 페이지에 필요한 컴포넌트를 렌더링 하기 위해 사용
   - Redux-Toolkit
+    - Redux-Devtools가 내장되어 있어 브라우저 extension 활용 가능
     - Redux thunk가 내장되어 있어 비동기를 지원
     - action type이나 action creator를 따로 생성해주지 않아도 됨
     - Redux-Toolkit은 기존 Redux의 단점으로 꼽히는 보일러플레이트 코드가 줄어듦
@@ -110,9 +109,6 @@
             |-- CommentListContainer.tsx
             |-- FormContainer.tsx
             |-- PageListContainer.tsx
-        |-- pages
-            |-- CommentsPage.tsx
-        |-- services
         |-- store
             |-- comments.reducer.ts
             |-- form.reducer.ts
@@ -156,6 +152,15 @@
 ---
 
 ## 📝 구현 기능
+
+<br />
+
+공통구현기능
+
+- Reducer 구현
+
+  - Comments Reducer: Thunk를 활용하여 비동기 통신 구현
+  - Form Reducer: 수정/등록 시 Form component의 상태관리
 
   <br />
 
