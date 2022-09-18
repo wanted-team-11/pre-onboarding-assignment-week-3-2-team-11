@@ -1,21 +1,15 @@
 /**
- * TODO: async thunk param type 추가할 것
+ * @TODO 수정버튼 클릭했을 때 setForm활용해서 데이터 채워주기
+ * @TODO ??
  */
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Comment } from "../types";
 
 const axiosClient = axios.create({
   baseURL: "http://localhost:4000",
 });
-
-export interface Comment {
-  id: number;
-  profile_url: string;
-  author: string;
-  content: string;
-  createdAt: string;
-}
 
 export interface CommentState {
   comments: Comment[];
@@ -33,7 +27,7 @@ const initialState: CommentState = {
 export const getComments = createAsyncThunk(
   "comment/getComments",
   async (pageNum: number = 1) => {
-    const response = await axiosClient.get<Comment[]>(
+    const response = await axiosClient.get(
       `/comments?_page=${pageNum}&_limit=4&_order=desc&_sort=id`
     );
     const totalCount = parseInt(response.headers["x-total-count"]);
@@ -63,7 +57,7 @@ export const postComments = createAsyncThunk(
 // DELETE
 export const deleteComments = createAsyncThunk(
   "comment/deleteComments",
-  async (id: number) => {
+  async (id: Comment["id"]) => {
     const response = await axiosClient.delete(`/comments/${id}`);
     return response.data;
   }
@@ -80,8 +74,8 @@ export const commentsSlice = createSlice({
     });
     builder.addCase(getComments.fulfilled, (state, action) => {
       const [comments, totalCount] = action.payload;
-      state.comments = comments as Comment[];
-      state.totalCount = totalCount as number;
+      state.comments = comments;
+      state.totalCount = totalCount;
       state.isLoading = false;
     });
     builder.addCase(getComments.rejected, (state, action) => {

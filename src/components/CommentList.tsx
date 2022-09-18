@@ -5,9 +5,13 @@ import styled from "styled-components";
 // import { setFormData } from "form 리듀서"
 import {
   getComments,
-  Comment,
   deleteComments,
+  putComments,
 } from "../store/comments.reducer";
+
+import { Comment } from "../types";
+
+import { formSlice } from "../store/form.reducer";
 
 // const passDataToForm = (comment) => {
 //   setFormData(comment);
@@ -24,9 +28,14 @@ function CommentList() {
 
   const commentData = useAppSelector((state) => state.comments.comments);
 
-  const onDelete = (id: number) => {
+  const onDelete = (id: string) => {
     dispatch(deleteComments(id));
     dispatch(getComments());
+  };
+
+  const onEdit = (id: string) => {
+    const comment = commentData.find((comment) => comment.id === id);
+    if (comment) dispatch(formSlice.actions.setForm(comment));
   };
 
   useEffect(() => {
@@ -47,7 +56,9 @@ function CommentList() {
 
           {/* <Button onClick={() => passDataToForm(comment)}> */}
           <Button>
-            <button type="button">수정</button>
+            <button type="button" onClick={() => onEdit(comment.id)}>
+              수정
+            </button>
             <button
               type="button"
               onClick={() => {

@@ -1,17 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface FormInputs {
-  id: string;
-  profile_url: string;
-  author: string;
-  content: string;
-  createdAt: string;
-}
+import { Comment } from "../types";
 
 export type SubmitMode = "put" | "post";
 
 export interface FormInputsState {
-  inputs: FormInputs;
+  inputs: Comment;
   submitMode: SubmitMode;
 }
 
@@ -33,7 +26,7 @@ export const formSlice = createSlice({
     resetForm: (state) => {
       state.inputs = initialState.inputs;
     },
-    setForm: (state, action: PayloadAction<FormInputs>) => {
+    setForm: (state, action: PayloadAction<Comment>) => {
       state.inputs = { ...action.payload };
     },
     setMode: (state, action: PayloadAction<SubmitMode>) => {
