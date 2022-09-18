@@ -3,9 +3,9 @@ import { resetForm, setForm, setMode } from "../store/form.reducer";
 import {
   postComments,
   putComments,
-  Comment,
   getComments,
 } from "../store/comments.reducer";
+import { Comment } from "../types";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../store";
 import styled from "styled-components";
@@ -42,7 +42,7 @@ function Form() {
     } else if (submitMode === "put") {
       const editedComment: Comment = {
         ...inputs,
-        id: parseInt(inputs.id),
+        id: inputs.id,
       };
       dispatch(putComments(editedComment));
     }
