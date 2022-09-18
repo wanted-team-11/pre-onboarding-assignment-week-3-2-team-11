@@ -12,11 +12,11 @@
 
 > 역할
 
-| 이름                                | 역할           |
-| ----------------------------------- | -------------- |
-| **정재훈** , **김인태** ,**이미란** | 각자 역할 작성 |
-| **오강산** , **정진우** ,**박희주** | 각자 역할 작성 |
-| **김항래**, **현승범**              | 각자 역할 작성 |
+| 이름                                | 역할                        |
+| ----------------------------------- | --------------------------- |
+| **정재훈** , **김인태** ,**이미란** | 게시물 작성, 수정           |
+| **오강산** , **정진우** ,**박희주** | comment list component 구현 |
+| **김항래**, **현승범**              | pagination component 구현   |
 
 <br />
 <br />
@@ -48,14 +48,13 @@
 
 <br />
 
-![react](https://img.shields.io/badge/react-18.2.0-61DAFB?logo=react)
+![react](https://img.shields.io/badge/react-18.0.0-61DAFB?logo=react)
 ![typescript](https://img.shields.io/badge/typescript-4.8.3-3178C6?logo=typescript)
 ![styledComponents](https://img.shields.io/badge/styled--components-5.3.5-DB7093?logo=styledcomponents)
 ![axios](https://img.shields.io/badge/axios-0.27.2-5E22D6)
 ![react-router-dom](https://img.shields.io/badge/react--router--dom-6.3.0-blue?logo=react-router)
-![Redux](https://img.shields.io/badge/Redux-4.2.0-brightgreen)
-![intersection observer](https://img.shields.io/badge/Intersection%20Observer-%20-red)
-![react-markdown](https://img.shields.io/badge/react--markdown-%208.0.3-red)
+![redux](https://img.shields.io/badge/redux--toolkit-1.8.5-764ABC?logo=Redux)
+![React-Redux](https://img.shields.io/badge/react--redux-7.2.8-764ABC?logo=redux)
 
 - 선정 이유
 
@@ -72,16 +71,15 @@
   - React-Router-Dom
     - React의 SPA(Single Page Application)특성상 하나의 페이지(HTML)에서 모든 렌더링이 이루어짐
     - React의 이러한 강점을 활용하기 위해 페이지의 로딩없이 페이지에 필요한 컴포넌트를 렌더링 하기 위해 사용
-  - Context API
-    - api 통신 관리
-    - 데이터 전역적 공유를 통한 props drilling 방지
-  - intersection observer
-    - 페이지가 스크롤 되는 도중에 발생하는 이미지나 다른 컨텐츠의 지연 로딩
-    - 사용자에게 결과가 표시되는 여부에 따라 작업이나 애니메이션을 수행할 지 여부를 결정
-  - React-Markdown
-    - 리액트에서 마크다운을 처리할 때 dangerouslySetInnerHTML에 의존이 크거나 버그가 있기 때문
-      <br />
+  - Redux-Toolkit
+    - Redux는 자바스크립트 상태 관리 라이브러리 중 표준이며 가장 많이 상용되는 상태 관리 라이브러리 중 하나이다.
+    - Redux-Toolkit은 기존 Redux에서
+  - React-Redux
+    - 컴포넌트의 상태 업데이트 관련 로직을 다른파일로 분리시켜 효율적으로 관리하기 위함.
+    - Redux는 모든 자바스크립트 프레임워크와 라이브러리에서 구동이 가능하지만 React에 최적화 되어있지는 않음
+    - React에서 보다 효과적으로 Redux를 활용하고자함
 
+<br />
 <br />
 
 ---
@@ -94,40 +92,54 @@
     |-- package.json
     |-- package-lock.json
     |-- .gitignore
+    |-- data.json
     |-- .husky
     |-- public
     |   |-- index.html
     |-- src
-        |-- assets
-        |-- compoenents
-        |-- page
-        |-- context
-        |-- styles
+        |-- components
+             |-- CommentList.tsx
+             |-- Form.ts
+        |-- containers
+        |-- pages
+        |-- services
+        |-- store
+        |-- util
         |-- App.tsx
         |-- index.tsx
+        |-- types.ts
 
 ---
 
-## ✅ 요구 사항
+## ✅ 참고 사항
 
 - API
-  - GitHub REST API
-  - token을 발급하지 않으면 시간 당 60회로 API 호출 횟수 제한 됨, 개발 시에는 access token을 발급받아 60회 제한 없이 개발, 이후 과제 제출 및 배포단계에서는 access token을 넣지 않도록 수정<br/>
-    [[githup REST API](https://docs.github.com/en/rest)]
 
-1. 이슈 목록 화면
-   - 이슈 목록 가져오기 API 활용
-   - open 상태의 이슈 중 코멘트가 많은 순으로 정렬
-   - 각 행에는 ‘이슈번호, 이슈제목, 작성자, 작성일, 코멘트수’를 표시
-   - 다섯번째 셀에는 광고 이미지 출력
-     - 광고 이미지 클릭 시 [https://thingsflow.com/ko/home](https://thingsflow.com/ko/home)로 이동
-   - 화면을 아래로 스크롤 할 시 이슈 목록 추가 로딩(인피니티 스크롤)
-2. 이슈 상세 화면
-   - 이슈의 상세 내용 표시
-   - ‘이슈번호, 이슈제목, 작성자, 작성일, 코멘트 수, 작성자 프로필 이미지, 본문' 표시
-3. 공통 헤더
-   - 두 페이지는 공통 헤더를 공유.
-   - 헤더에는 Organization Name / Repository Name이 표시.
+  - 프로젝트내에서 npm install 후, npm run api 실행 시 localhost:4000 에 API 서버 실행
+  - http://localhost:4000/comments에 GET 요청시 data.json 파일에 기록
+  - API 를 통해 입력하거나 수정하면 data.json 파일내용도 변경됨
+  - 총 댓글수는 `/comments` API로 호출 후 응답값을 통해서 직접 계산.
+  - 서버는 json-server 라이브러리 이용해서 구축됨
+    - API 사용법에 대한 추가정보는 공식문서 참고: [https://www.npmjs.com/package/json-server](https://www.npmjs.com/package/json-server)
+      | method | url |
+      | ------ | --------------------- |
+      | GET | /comments |
+      | GET | /comments/{commentId} |
+      | POST | /comments |
+      | PUT | /comments/{commentId} |
+      | DELETE | /comments/{commentId} |
+  - API 호출 예시:
+    - 한페이지에 4개의 게시물이 보이고, 최근 게시물부터 정렬해서 3페이지를 보고 싶은 경우
+    - GET `/comments?_page=3&_limit=4&_order=desc&_sort=id`
+
+- Redux 환경설정은 자유롭게 진행
+
+  - Redux-saga or Redux-thunk 자유롭게 선택 가능
+  - 미들웨어 사용안하는 것도 가능
+
+- Redux logger, Redux-Devtools 설정 필수
+- Redux를 이용한 비동기 처리 필수
+  <br/>
 
 ---
 
@@ -135,28 +147,15 @@
 
   <br />
 
-- 공통구현 사항
-  - Context API:
-    - 외부 API 통신 (Github) - axios 사용
-    - 외부 데이터 state (Issue list, Issue Detail)
-    - 데이터 로딩상태, 에러상태, 헤더 텍스트 등
-
-https://user-images.githubusercontent.com/16061038/190247218-2c061ac4-36b5-4f41-a45d-0c17eeb35bda.mov
-
-- 이슈 목록 화면
-  - 최초 30개 데이터를 받아 map으로 보여줘야 할 리스트 렌더링
-  - `div`태그를 하나 제작해 스크롤 바닥 도달 감지 역할 부여 (옵저버)
-  - 스크롤 맨 밑으로 도달할 때마다 다음 30개 데이터 요청 및 리스트에 추가 & 렌더링
-    - 옵져버가 감지 될 때마다 page값 1씩 올려 API의 parameter에 담아 요청
-  - 매 로딩 시 spinner 이미지 화면하단에 삽입
-
-https://user-images.githubusercontent.com/16061038/190248687-76d9804a-679a-478e-ac84-56e03e0bd090.mov
-
-- 이슈 상세 화면
-  - 이슈 상세 id(useParam) 받아 이슈 상세 정보 요청 및 렌더링
-    - 이슈 목록 페이지에서 정보를 넘겨줄 경우 새로고침시 데이터가 날아가므로, 대신 상세정보를 새로 요청하도록 구현
-  - 마크다운 형식으로 받아온 데이터를 react-markdown을 활용해 읽기 편한 형식으로 렌더링
-  - detail 페이지를 불러올 때 로딩중인 상태를 알려주기 위한 spinner 이미지 삽입
+1. 댓글 불러오기, 작성, 수정, 삭제가 동작하도록 기능 구현
+   <이미지>
+2. 페이지네이션
+   <이미지>
+3. 댓글 작성, 수정, 삭제 후 동작
+   - 댓글 작성하고 난 뒤: 다른 페이지에 위치하고 있었더라도 1페이지로 이동, 입력 폼 초기화
+   - 댓글 수정하고 난 뒤: 현재 보고있는 페이지 유지, 입력 폼 초기화
+   - 삭제하고 난 뒤: 1페이지로 이동
+     <이미지>
 
 ---
 
