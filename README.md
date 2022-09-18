@@ -16,9 +16,9 @@
 
 | 이름                                | 역할                       |
 | ----------------------------------- | -------------------------- |
-| **정재훈** , **김인태** ,**이미란** | Form component 구현        |
-| **오강산** , **정진우** ,**박희주** | CommentList component 구현 |
-| **김항래**, **현승범**              | Pagination component 구현  |
+| **정재훈** , **김인태** ,**이미란** | Reducer 구현, Form component 구현        |
+| **오강산** , **정진우** ,**박희주** | Reducer 구현, CommentList component 구현 |
+| **김항래**, **현승범**              | Reducer 구현, Pagination component 구현  |
 
 <br />
 <br />
@@ -40,7 +40,11 @@
 
 <br />
 
-> 배포링크
+> https://team-11-comments.netlify.app/
+<br />
+
+- json-server는 heroku app을 별도로 배포했습니다. => https://gugig-json-server.herokuapp.com/
+- Redux의 개발자도구와 `redux-logger`의 log 정보는 배포된 사이트에선 노출되지 않도록 조치되어있으므로, 이를 확인하기 위해선 직접 프로젝트를 받아 실행하시기 바랍니다.
 
 <br />
 <br />
@@ -165,14 +169,16 @@
   <br />
 
 1. 댓글 불러오기, 작성, 수정, 삭제가 동작하도록 기능 구현
-   <이미지>
 2. 페이지네이션
-   <이미지>
 3. 댓글 작성, 수정, 삭제 후 동작
    - 댓글 작성하고 난 뒤: 다른 페이지에 위치하고 있었더라도 1페이지로 이동, 입력 폼 초기화
    - 댓글 수정하고 난 뒤: 현재 보고있는 페이지 유지, 입력 폼 초기화
    - 삭제하고 난 뒤: 1페이지로 이동
-     <이미지>
+
+
+https://user-images.githubusercontent.com/16061038/190904186-53faf982-c498-4f58-97bd-5947857a045d.mov
+
+
 
 ---
 
