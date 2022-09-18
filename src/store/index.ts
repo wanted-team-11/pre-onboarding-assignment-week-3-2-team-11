@@ -9,10 +9,17 @@ const reducer = combineReducers({
   comments: commentsReducer,
 });
 
-export const store = configureStore({
-  reducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
-});
+export const store =
+  process.env.NODE_ENV === "development"
+    ? configureStore({
+        reducer,
+        middleware: (getDefaultMiddleware) =>
+          getDefaultMiddleware().concat(logger),
+      })
+    : configureStore({
+        reducer,
+        devTools: false,
+      });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

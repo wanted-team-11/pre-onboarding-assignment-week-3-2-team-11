@@ -7,8 +7,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Comment } from "../types";
 
+const baseURL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:4000"
+    : "https://gugig-json-server.herokuapp.com/";
+
 const axiosClient = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL,
 });
 
 export interface CommentState {
