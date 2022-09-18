@@ -1,5 +1,6 @@
 # 원티드 프리온보딩 6차 3주차-2번 과제
 
+> 목표 : API 서버와 통신해서 작동하는 댓글 프로젝트를 Redux를 통해 구현
 ## 💡 11팀
 
 > 참여 인원 (이미지 클릭시 개인 레포지토리로 이동)
@@ -59,7 +60,7 @@
 - 선정 이유
 
   - TypeScript
-    - 정적 타입 지원하므로 컴파일 단계에서 오류를 사전에 포착할 수 있으며 이를 통해 미리 디버깅이 가능함
+    - 정적 타입 지원하므로 컴파일 단계에서 오류를 사전에 포착할 수 있으며 이를 통해 미리 디버깅이 가능
   - Styled-Components
     - CSS-in-JS는 짧은 길이의 유니크한 클래스를 자동적으로 생성하기에 코드 경량화에 효과적
     - 컴포넌트 기반 개발 방법에 적합하고 가장 많이 사용되는 CSS-in-JS 라이브러리
@@ -67,15 +68,18 @@
     - 컴포넌트화하여 재활용 가능
   - Axios
     - Request와 Reply를 JSON 형태로 자동 변경
+    - instance를 제작하여 fetchAPI보다 가독성 높은 코드를 작성 가능
     - fetchAPI와 차이점으로 fetchAPI는 요청 후 Promise로 JSON형태로 변환을 해야하지만 axios는 애초에 JSON으로 응답을 해줘서 간결한 코드 작성이 가능
   - React-Router-Dom
     - React의 SPA(Single Page Application)특성상 하나의 페이지(HTML)에서 모든 렌더링이 이루어짐
     - React의 이러한 강점을 활용하기 위해 페이지의 로딩없이 페이지에 필요한 컴포넌트를 렌더링 하기 위해 사용
   - Redux-Toolkit
-    - Redux는 자바스크립트 상태 관리 라이브러리 중 표준이며 가장 많이 상용되는 상태 관리 라이브러리 중 하나이다.
-    - Redux-Toolkit은 기존 Redux에서
+    - Redux thunk가 내장되어 있어 비동기를 지원
+    - action type이나 action creator를 따로 생성해주지 않아도 됨
+    - Redux-Toolkit은 기존 Redux의 단점으로 꼽히는 보일러플레이트 코드가 줄어듦
+    - 많은 라이브러리들이 내장되어 있어서 라이브러리들의 의존성을 줄일 수 있음
   - React-Redux
-    - 컴포넌트의 상태 업데이트 관련 로직을 다른파일로 분리시켜 효율적으로 관리하기 위함.
+    - 컴포넌트의 상태 업데이트 관련 로직을 다른파일로 분리시켜 효율적으로 관리하기 위함
     - Redux는 모든 자바스크립트 프레임워크와 라이브러리에서 구동이 가능하지만 React에 최적화 되어있지는 않음
     - React에서 보다 효과적으로 Redux를 활용하고자함
 
@@ -98,13 +102,20 @@
     |   |-- index.html
     |-- src
         |-- components
-             |-- CommentList.tsx
-             |-- Form.ts
+            |-- CommentList.tsx
+            |-- Form.tsx
+            |-- Pagination.tsx
         |-- containers
+            |-- CommentListContainer.tsx
+            |-- FormContainer.tsx
+            |-- PageListContainer.tsx
         |-- pages
+            |-- CommentsPage.tsx
         |-- services
         |-- store
-        |-- util
+            |-- comments.reducer.ts
+            |-- form.reducer.ts
+            |-- index.ts
         |-- App.tsx
         |-- index.tsx
         |-- types.ts
