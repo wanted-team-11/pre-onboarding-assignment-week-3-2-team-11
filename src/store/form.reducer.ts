@@ -1,15 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface FormInputs {
-  id: string;
-  profile_url: string;
-  author: string;
-  content: string;
-  createdAt: string;
-}
-
+import { Comment } from "../types";
 interface FormInputsState {
-  inputs: FormInputs;
+  inputs: Comment;
 }
 
 const initialState: FormInputsState = {
@@ -18,21 +10,21 @@ const initialState: FormInputsState = {
     profile_url: "",
     author: "",
     content: "",
-    createdAt: "",
-  },
+    createdAt: ""
+  }
 };
 
 export const formSlice = createSlice({
   name: "form",
   initialState,
   reducers: {
-    resetForm: (state) => {
+    resetForm: state => {
       state.inputs = initialState.inputs;
     },
-    setForm: (state, action: PayloadAction<FormInputs>) => {
+    setForm: (state, action: PayloadAction<Comment>) => {
       state.inputs = { ...action.payload };
-    },
-  },
+    }
+  }
 });
 
 export const { resetForm, setForm } = formSlice.actions;

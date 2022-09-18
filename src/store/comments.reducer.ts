@@ -5,18 +5,11 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Comment } from "../types";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "http://localhost:4000"
 });
-
-export interface Comment {
-  id: number;
-  profile_url: string;
-  author: string;
-  content: string;
-  createdAt: string;
-}
 
 export interface CommentState {
   comments: Comment[];
@@ -27,14 +20,14 @@ export interface CommentState {
 const initialState: CommentState = {
   comments: [],
   isLoading: false,
-  totalCount: 0,
+  totalCount: 0
 };
 
 // GET
 export const getComments = createAsyncThunk(
   "comment/getComments",
   async (pageNum: number = 1) => {
-    const response = await axiosClient.get<Comment[]>(
+    const response = await axiosClient.get(
       `/comments?_page=${pageNum}&_limit=4&_order=desc&_sort=id`
     );
     const totalCount = parseInt(response.headers["x-total-count"]);
@@ -64,7 +57,7 @@ export const postComments = createAsyncThunk(
 // DELETE
 export const deleteComments = createAsyncThunk(
   "comment/deleteComments",
-  async (id: number) => {
+  async (id: Comment["id"]) => {
     const response = await axiosClient.delete(`/comments/${id}`);
     return response.data;
   }
@@ -84,15 +77,15 @@ export const commentsSlice = createSlice({
     //   state.value += action.payload
     // },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     // GET
     builder.addCase(getComments.pending, (state, action) => {
       state.isLoading = true;
     });
     builder.addCase(getComments.fulfilled, (state, action) => {
       const [comments, totalCount] = action.payload;
-      state.comments = comments as Comment[];
-      state.totalCount = totalCount as number;
+      state.comments = comments;
+      state.totalCount = totalCount;
       state.isLoading = false;
     });
     builder.addCase(getComments.rejected, (state, action) => {
@@ -101,7 +94,7 @@ export const commentsSlice = createSlice({
     });
 
     // PUT
-    builder.addCase(putComments.pending, (state) => {
+    builder.addCase(putComments.pending, state => {
       state.isLoading = true;
     });
     builder.addCase(putComments.fulfilled, (state, action) => {
@@ -113,29 +106,29 @@ export const commentsSlice = createSlice({
     });
 
     // POST
-    builder.addCase(postComments.pending, (state) => {
+    builder.addCase(postComments.pending, state => {
       state.isLoading = true;
     });
-    builder.addCase(postComments.fulfilled, (state) => {
+    builder.addCase(postComments.fulfilled, state => {
       state.isLoading = false;
     });
-    builder.addCase(postComments.rejected, (state) => {
+    builder.addCase(postComments.rejected, state => {
       alert("댓글 작성에 실패하였습니다.");
       state.isLoading = false;
     });
 
     // DELETE
-    builder.addCase(deleteComments.pending, (state) => {
+    builder.addCase(deleteComments.pending, state => {
       state.isLoading = true;
     });
-    builder.addCase(deleteComments.fulfilled, (state) => {
+    builder.addCase(deleteComments.fulfilled, state => {
       state.isLoading = false;
     });
-    builder.addCase(deleteComments.rejected, (state) => {
+    builder.addCase(deleteComments.rejected, state => {
       alert("댓글 삭제에 실패하였습니다.");
       state.isLoading = false;
     });
-  },
+  }
 });
 
 // export const { increment, decrement, incrementByAmount } = commentsSlice.actions
